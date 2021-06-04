@@ -11,12 +11,10 @@ public final class SecurityConstants {
 	public static final String TOKEN_HEADER = "Authorization";
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String TOKEN_TYPE = "JWT";
-	public static final String TOKEN_ISSUER = "parkpay-api";
-	public static final String TOKEN_AUDIENCE = "parkpay-app";
+	public static final String TOKEN_ISSUER = "safe-box";
+	public static final String TOKEN_AUDIENCE = "safe-box";
 
-	/** Nombre del permiso de administrador de seguridad. */
-	public static final String ADMIN_SECURITY_AUTHORITY = "ADMIN_SECURITY";
-
+	
 	private SecurityConstants() {
 		throw new IllegalStateException("Cannot create instance of static util class");
 	}
