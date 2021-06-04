@@ -1,4 +1,4 @@
-package com.safebox.services;
+package com.safeish.services;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.safebox.securing.filter;
+package com.safeish.securing.filter;
 
 import java.io.IOException;
 
@@ -14,9 +14,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safebox.model.JwtRequest;
-import com.safebox.securing.JwtTokenUtil;
-import com.safebox.securing.SecurityConstants;
+import com.safeish.model.JwtRequest;
+import com.safeish.securing.JwtTokenUtil;
+import com.safeish.securing.SecurityConstants;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 	

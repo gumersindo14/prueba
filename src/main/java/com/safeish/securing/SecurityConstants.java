@@ -1,4 +1,4 @@
-package com.safebox.securing;
+package com.safeish.securing;
 
 public final class SecurityConstants {
 

@@ -1,4 +1,4 @@
-package com.safebox.controller;
+package com.safeish.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

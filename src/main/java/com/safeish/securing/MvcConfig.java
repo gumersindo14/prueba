@@ -1,4 +1,4 @@
-package com.safebox.securing;
+package com.safeish.securing;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,8 +9,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.safebox.securing.filter.FilterJwtAuthenticationFilter;
-import com.safebox.securing.filter.LoginFilter;
+import com.safeish.securing.filter.FilterJwtAuthenticationFilter;
+import com.safeish.securing.filter.LoginFilter;
 
 @Configuration
 public class MvcConfig extends WebSecurityConfigurerAdapter {

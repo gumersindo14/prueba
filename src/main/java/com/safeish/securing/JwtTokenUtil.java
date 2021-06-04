@@ -1,4 +1,4 @@
-package com.safebox.securing;
+package com.safeish.securing;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
 
-import com.safebox.model.UserAuthenticated;
+import com.safeish.model.UserAuthenticated;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

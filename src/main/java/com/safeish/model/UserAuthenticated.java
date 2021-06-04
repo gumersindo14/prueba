@@ -1,4 +1,4 @@
-package com.safebox.model;
+package com.safeish.model;
 
 import java.util.Collection;
 

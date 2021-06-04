@@ -1,4 +1,4 @@
-package com.safebox.controller;
+package com.safeish.controller;
 
 //@RestController
 public class AuthenticationController {

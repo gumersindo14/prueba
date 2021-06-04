@@ -1,4 +1,4 @@
-package com.safebox.securing.filter;
+package com.safeish.securing.filter;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.safebox.securing.JwtTokenUtil;
+import com.safeish.securing.JwtTokenUtil;
 
 public class FilterJwtAuthenticationFilter extends GenericFilterBean {
 

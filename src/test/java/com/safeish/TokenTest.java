@@ -1,10 +1,10 @@
-package com.safebox;
+package com.safeish;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.safebox.securing.JwtTokenUtil;
+import com.safeish.securing.JwtTokenUtil;
 
 
 class TokenTest {
