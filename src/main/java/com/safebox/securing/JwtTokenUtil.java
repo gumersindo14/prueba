@@ -75,10 +75,10 @@ public class JwtTokenUtil implements Serializable {
 
 		String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
 
-		if (token != null) {
+		if (token != null && token.contains(SecurityConstants.TOKEN_PREFIX)) {
 
-			try {
-
+			try {			
+				
 				String realToken = token.replace(SecurityConstants.TOKEN_PREFIX, "");
 				String username = getUsernameFromToken(realToken);
 

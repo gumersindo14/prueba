@@ -24,8 +24,7 @@ public class MvcConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		
+	protected void configure(HttpSecurity http) throws Exception {		
 		http
 	    .csrf().disable()
 		.authorizeRequests()
@@ -33,10 +32,7 @@ public class MvcConfig extends WebSecurityConfigurerAdapter {
 		.anyRequest().authenticated()
 		.and()
 		.addFilterBefore(new LoginFilter("/safebox/login",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-		.addFilterBefore(new FilterJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		
+		.addFilterBefore(new FilterJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);		
 	}
-
-	
 	
 }
