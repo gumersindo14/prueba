@@ -8,20 +8,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.safeish.safebox.Customer;
-import com.safeish.safebox.api.CustomerRepository;
+import com.safeish.safebox.jpa.entity.Safebox;
+import com.safeish.safebox.jpa.repository.SafeboxRepository;
 
 @SpringBootTest
 public class SafeBoxRepositoryTest {
 
     
     @Autowired
-    private CustomerRepository customerRepository;
+    private SafeboxRepository customerRepository;
     
     @Test
     public void whenFindingCustomerById_thenCorrect() {
-        Customer c = customerRepository.save(new Customer("John", "john@domain.com"));
-        Optional<Customer> c2 = customerRepository.findById(c.getId());
+        Safebox c = customerRepository.save(new Safebox("John", "john@domain.com"));
+        Optional<Safebox> c2 = customerRepository.findById(c.getId());
         assertEquals(c2.get(),c);
     }
     

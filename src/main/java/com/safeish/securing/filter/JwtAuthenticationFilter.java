@@ -14,18 +14,17 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.safeish.securing.JwtTokenUtil;
 
-public class FilterJwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends GenericFilterBean {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
-		Authentication authentication = JwtTokenUtil.getInstance().validateToken((HttpServletRequest) request);		
-		SecurityContextHolder.getContext().setAuthentication(authentication);		
+
+		Authentication authentication = JwtTokenUtil.getInstance().validateToken((HttpServletRequest) request);
+		if (authentication.isAuthenticated()) {
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
 		chain.doFilter(request, response);
-		
+
 	}
-	
-	
-	
 
 }

@@ -1,6 +1,7 @@
 package com.safeish.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class JwtRequest implements Serializable {
 
@@ -8,6 +9,7 @@ public class JwtRequest implements Serializable {
 	
 	private String username;
 	private String password;
+	private UUID id;
 	
 	public JwtRequest() {};
 	
@@ -31,4 +33,14 @@ public class JwtRequest implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+
 }

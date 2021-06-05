@@ -1,29 +1,39 @@
-package com.safeish.safebox;
+package com.safeish.safebox.jpa.entity;
 
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import com.safeish.securing.constraints.ValidPassword;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "safebox")
+public class Safebox {
     
-
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     
+    @NotBlank(message = "Name is mandatory")
+    @Column(name="name", unique=true)
 	private String name;
     
+	@ValidPassword
     private String password;
+	
+    @Column()
+    private Integer attempts = 0;
+
     
-    public Customer() {}
+    public Safebox() {}
     
-    public Customer(String name, String password) {
+    public Safebox(String name, String password) {
     
     	this.name = name;
     	this.password = password;
@@ -53,12 +63,20 @@ public class Customer {
 	public void setId(UUID id) {
 		this.id = id;
 	}
+	
+	public Integer getAttempts() {
+		return attempts;
+	}
 
+	public void setAttempts(Integer attempts) {
+		this.attempts = attempts;
+	}
 	
     @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((attempts == null) ? 0 : attempts.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -73,7 +91,12 @@ public class Customer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Customer other = (Customer) obj;
+		Safebox other = (Safebox) obj;
+		if (attempts == null) {
+			if (other.attempts != null)
+				return false;
+		} else if (!attempts.equals(other.attempts))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
