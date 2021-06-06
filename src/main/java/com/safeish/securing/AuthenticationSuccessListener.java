@@ -13,7 +13,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
     @Autowired
     private SafeboxRepository safeboxRepository;
     
-    public static Integer MAX_ATTEMPTS = 3;
+    public static final Integer MAX_ATTEMPTS = 3;
     
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
@@ -22,7 +22,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
     	
     	if(name != null) {
     		var safebox = safeboxRepository.findByName(name);    		
-    		if (safebox != null && safebox.getAttempts() != null && safebox.getAttempts() < 3) {      			
+    		if (safebox != null && safebox.getAttempts() != null && safebox.getAttempts() < MAX_ATTEMPTS) {      			
     			safebox.setAttempts(0);
     			safeboxRepository.save(safebox);    			
     		}    		

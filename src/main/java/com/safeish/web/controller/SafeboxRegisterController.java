@@ -19,7 +19,7 @@ public class SafeboxRegisterController {
 	ISafeboxService safeboxService;
 
 	@PostMapping("/safebox")
-	ResponseEntity<String> addSafebox(@RequestBody Safebox safebox) throws Exception {
+	ResponseEntity<String> addSafebox(@RequestBody Safebox safebox) {
 
 		try {
 			return safeboxService.safeboxRegister(safebox);

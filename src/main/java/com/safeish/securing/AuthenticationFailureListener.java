@@ -21,7 +21,7 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
     	
     	if(id != null) {
     		var safebox = safeboxRepository.findById(UUID.fromString(id)).get();    		
-    		if (safebox != null && safebox.getAttempts() != null && safebox.getAttempts() < 3) {      			
+    		if (safebox != null && safebox.getAttempts() != null && safebox.getAttempts() < AuthenticationSuccessListener.MAX_ATTEMPTS) {      			
     			safebox.setAttempts(safebox.getAttempts()+1);
     			safeboxRepository.save(safebox);    			
     		}    		
