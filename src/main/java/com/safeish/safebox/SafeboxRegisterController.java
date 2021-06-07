@@ -1,9 +1,10 @@
-package com.safeish.controller;
+package com.safeish.safebox;
 
 import java.lang.reflect.MalformedParametersException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safeish.safebox.entity.Safebox;
-import com.safeish.safebox.repository.SafeboxRepository;
 import com.safeish.safebox.service.ISafeboxService;
+import com.safeish.safebox.service.impl.SafeboxNotFoundException;
+import com.safeish.safebox.service.impl.SafeboxblockedExeption;
+import com.safeish.safebox.service.impl.UnauthorizedException;
 import com.safeish.safebox.service.impl.exceptions.RepeatedNameSafebox;
 import com.safeish.safebox.service.impl.exceptions.ValidatePasswordExceptions;
+import com.safeish.securing.SecurityConstants;
 
 @RestController
 @RequestMapping("")
@@ -43,5 +47,29 @@ public class SafeboxRegisterController {
 			return new ResponseEntity<String>("Unexpected API error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping(path = "/safebox/open")
+	public ResponseEntity<String> item( @RequestParam("id") String name, @RequestParam("password") String password) {
+
+			
+			try {
+				String token = safeboxService.openSafebox(name, password);
+			    HttpHeaders responseHeaders = new HttpHeaders();
+			    responseHeaders.set(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+			    return ResponseEntity.ok().headers(responseHeaders).body(token);
+
+			} catch (SafeboxNotFoundException e) {
+				return new ResponseEntity<String>("Requested safebox does not exist", HttpStatus.NOT_FOUND);
+			} catch (SafeboxblockedExeption e) {
+				return new ResponseEntity<String>("Requested safebox does not exist", HttpStatus.LOCKED);
+			} catch (UnauthorizedException e) {
+				return new ResponseEntity<String>("Requested safebox does not exist", HttpStatus.UNAUTHORIZED);
+			} catch (Exception e) {			
+				e.printStackTrace();
+				return new ResponseEntity<String>("Unexpected API error", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+	}
+
 	
 }

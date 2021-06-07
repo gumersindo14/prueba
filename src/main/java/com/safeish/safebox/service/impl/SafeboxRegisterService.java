@@ -30,16 +30,17 @@ import com.safeish.safebox.repository.SafeboxRepository;
 import com.safeish.safebox.service.ISafeboxService;
 import com.safeish.safebox.service.impl.exceptions.RepeatedNameSafebox;
 import com.safeish.safebox.service.impl.exceptions.ValidatePasswordExceptions;
+import com.safeish.securing.JwtTokenUtil;
 
 @Service
-public class SafeboxRegisterService implements ISafeboxService, UserDetailsService {
+public class SafeboxRegisterService implements ISafeboxService {
 
 	@Autowired
 	SafeboxRepository safeboxRepository;
 
 	@Override
 	public UUID safeboxRegister(@Valid Safebox safebox) throws Exception {
-		
+
 		validateSafeBox(safebox);
 		validatePassword(safebox);
 
@@ -53,7 +54,7 @@ public class SafeboxRegisterService implements ISafeboxService, UserDetailsServi
 				new CharacterRule(EnglishCharacterData.UpperCase, 1),
 				new CharacterRule(EnglishCharacterData.LowerCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1),
 				new CharacterRule(EnglishCharacterData.Special, 1), new WhitespaceRule()));
-		
+
 		RuleResult result = validator.validate(new PasswordData(safebox.getPassword()));
 
 		if (!result.isValid()) {
@@ -66,7 +67,8 @@ public class SafeboxRegisterService implements ISafeboxService, UserDetailsServi
 
 	private void validateSafeBox(@Valid Safebox safebox) throws RepeatedNameSafebox {
 
-		if (safebox.getName() == null || safebox.getName() == null || safebox.getName().equals("") || safebox.getPassword() == null)
+		if (safebox.getName() == null || safebox.getName() == null || safebox.getName().equals("")
+				|| safebox.getPassword() == null)
 			throw new MalformedParametersException();
 
 		if (existSafebox(safebox.getName()))
@@ -80,26 +82,28 @@ public class SafeboxRegisterService implements ISafeboxService, UserDetailsServi
 	}
 
 	private Safebox saveSafeBox(Safebox safebox) {
-//		PasswordEncoder codificador = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//		safebox.setPassword(codificador.encode(safebox.getPassword()));
 		return safeboxRepository.save(safebox);
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public String openSafebox(String safeboxId, String password)throws SafeboxNotFoundException, SafeboxblockedExeption, UnauthorizedException {
 
-		Safebox safebox = safeboxRepository.findById(UUID.fromString(username)).get();
-		PasswordEncoder codificador = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		if (safeboxId == null || "".equals(safeboxId))
+			throw new MalformedParametersException("User" + safeboxId + " was not found");
 
+		Safebox safebox = safeboxRepository.findById(UUID.fromString(safeboxId)).get();
 		if (safebox == null)
-			throw new UsernameNotFoundException("User" + username + " was not found");
-		if (safebox.getAttempts() > 2) {
-			System.out.println("user blocked");
-			return new User(safebox.getName(), codificador.encode(safebox.getPassword()), false, false, false, false,
-					Arrays.asList(new SimpleGrantedAuthority("ADMIN")));
-		}
-		return new User(safebox.getName(), codificador.encode(safebox.getPassword()),
-				Arrays.asList(new SimpleGrantedAuthority("ADMIN")));
+			throw new SafeboxNotFoundException();
+
+		if (safebox.getAttempts() > 2)
+			throw new SafeboxblockedExeption("Safebox: " + safebox.getId() + " blocked");
+
+		PasswordEncoder codificador = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		if (!codificador.matches(password, safebox.getPassword()))
+			throw new UnauthorizedException();
+
+		return JwtTokenUtil.getInstance().generateToken(safebox.getId().toString());
+
 	}
 
 }

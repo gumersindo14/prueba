@@ -26,9 +26,7 @@ public class MvcConfig extends WebSecurityConfigurerAdapter {
 		
 		PasswordEncoder codificador = PasswordEncoderFactories.createDelegatingPasswordEncoder();		
 		auth.userDetailsService(userDetailsService).passwordEncoder(codificador);
-		
-//		auth.inMemoryAuthentication().withUser("daniel").password(codificador.encode("safeboxPassUser")).roles("ADMIN");
-	
+			
 	}
 		
 	@Override

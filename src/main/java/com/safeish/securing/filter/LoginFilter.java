@@ -13,36 +13,37 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safeish.securing.JwtTokenUtil;
 import com.safeish.securing.SecurityConstants;
-import com.safeish.securing.model.JwtRequest;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
-	
-	public LoginFilter(String requiresAuthenticationRequestMatcher, AuthenticationManager manager ) {
+
+	public LoginFilter(String requiresAuthenticationRequestMatcher, AuthenticationManager manager) {
 		super(requiresAuthenticationRequestMatcher);
-		
+
 		setAuthenticationManager(manager);
-		
+
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-				
-		JwtRequest jwtRequest = new ObjectMapper().readValue(request.getInputStream(), JwtRequest.class);
-		UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(jwtRequest.getSafeboxId(),jwtRequest.getPassword());
-		
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException, IOException, ServletException {
+
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+
+		UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(id, password);
+
 		return getAuthenticationManager().authenticate(user);
 	}
-	
-	@Override
-	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-		
-		String jwt = JwtTokenUtil.getInstance().generateToken(authResult.getName());		
-		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + jwt );
 
-		
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authResult) throws IOException, ServletException {
+
+		String jwt = JwtTokenUtil.getInstance().generateToken(authResult.getName());
+		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + jwt);
+
 	}
-		
+
 }
