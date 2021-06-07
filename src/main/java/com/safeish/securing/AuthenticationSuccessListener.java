@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
+import com.safeish.safebox.jpa.entity.Safebox;
 import com.safeish.safebox.jpa.repository.SafeboxRepository;
 
 @Component
@@ -21,7 +22,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
     	String name = event.getAuthentication().getName();
     	
     	if(name != null) {
-    		var safebox = safeboxRepository.findByName(name);    		
+    		Safebox safebox = safeboxRepository.findByName(name);    		
     		if (safebox != null && safebox.getAttempts() != null && safebox.getAttempts() < MAX_ATTEMPTS) {      			
     			safebox.setAttempts(0);
     			safeboxRepository.save(safebox);    			

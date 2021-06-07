@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.ColumnTransformer;
-
 import com.safeish.safebox.jpa.entity.Safebox;
 
 @Entity

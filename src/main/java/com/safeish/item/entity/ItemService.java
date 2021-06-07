@@ -58,7 +58,7 @@ public class ItemService implements IItemService{
 			return new ResponseEntity<>("Requested safebox does not exist", HttpStatus.NOT_FOUND);		
 		if(AuthenticationSuccessListener.MAX_ATTEMPTS <= safebox.getAttempts())
 			return new ResponseEntity<>("Requested safebox is locked", HttpStatus.LOCKED);
-				asad
+				
 		return ResponseEntity.ok(itemRepository.findAll());
 	}
 

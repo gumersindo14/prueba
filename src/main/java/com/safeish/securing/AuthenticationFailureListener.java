@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.stereotype.Component;
 
+import com.safeish.safebox.jpa.entity.Safebox;
 import com.safeish.safebox.jpa.repository.SafeboxRepository;
 
 @Component
@@ -20,7 +21,7 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
     	String id = e.getAuthentication().getName();
     	
     	if(id != null) {
-    		var safebox = safeboxRepository.findById(UUID.fromString(id)).get();    		
+    		Safebox safebox = safeboxRepository.findById(UUID.fromString(id)).get();    		
     		if (safebox != null && safebox.getAttempts() != null && safebox.getAttempts() < AuthenticationSuccessListener.MAX_ATTEMPTS) {      			
     			safebox.setAttempts(safebox.getAttempts()+1);
     			safeboxRepository.save(safebox);    			

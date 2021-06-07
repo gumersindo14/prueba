@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.safeish.item.entity.Item;
-import com.safeish.securing.constraints.ValidPassword;
 
 @Entity
 @Table(name = "safebox")
@@ -28,7 +27,6 @@ public class Safebox {
     @Column(name="name", unique=true)
 	private String name;
     
-	@ValidPassword
     private String password;
 	
     @Column()
