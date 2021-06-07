@@ -1,4 +1,4 @@
-package com.safeish.web.controller;
+package com.safeish.controller;
 
 //@RestController
 public class AuthenticationController {

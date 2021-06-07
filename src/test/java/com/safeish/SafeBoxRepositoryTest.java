@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.safeish.safebox.jpa.entity.Safebox;
-import com.safeish.safebox.jpa.repository.SafeboxRepository;
+import com.safeish.safebox.entity.Safebox;
+import com.safeish.safebox.repository.SafeboxRepository;
 
 @SpringBootTest
 public class SafeBoxRepositoryTest {

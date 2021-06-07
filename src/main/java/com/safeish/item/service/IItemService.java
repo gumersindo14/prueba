@@ -1,4 +1,4 @@
-package com.safeish.item.entity;
+package com.safeish.item.service;
 
 import org.springframework.http.ResponseEntity;
 

@@ -1,9 +1,9 @@
 package com.safeish.safebox.service;
 
-import org.springframework.http.ResponseEntity;
+import java.util.UUID;
 
-import com.safeish.safebox.jpa.entity.Safebox;
+import com.safeish.safebox.entity.Safebox;
 
 public interface ISafeboxService {
-	public ResponseEntity<String> safeboxRegister( Safebox safebox) throws Exception;
+	public UUID safeboxRegister( Safebox safebox) throws Exception;
 }

@@ -1,4 +1,4 @@
-package com.safeish.model;
+package com.safeish.securing.model;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -7,33 +7,36 @@ public class JwtRequest implements Serializable {
 
 	private static final long serialVersionUID = 5926468583005150707L;
 	
-	private String username;
+	private String safeboxId;
 	private String password;
 	private UUID id;
 	
+	
 	public JwtRequest() {};
 	
-	public JwtRequest(String username, String password) {
-		this.setUsername(username);
-		this.setPassword(password);
+
+	public JwtRequest(String safeboxId, String password) {
+		this.safeboxId = safeboxId;
+		this.password = password;
 	}
 
-	public String getUsername() {
-		return this.username;
+
+	public String getSafeboxId() {
+		return safeboxId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setSafeboxId(String safeboxId) {
+		this.safeboxId = safeboxId;
 	}
 
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public UUID getId() {
 		return id;
 	}

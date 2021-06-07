@@ -1,4 +1,4 @@
-package com.safeish.safebox.service.impl;
+package com.safeish.safebox.service.impl.exceptions;
 
 public class ValidatePasswordExceptions extends Exception {
 	

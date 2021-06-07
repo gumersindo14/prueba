@@ -1,4 +1,4 @@
-package com.safeish.safebox.jpa.repository;
+package com.safeish.safebox.repository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.safeish.safebox.jpa.entity.Safebox;
+import com.safeish.safebox.entity.Safebox;
 
 @Component("beforeCreateSafeboxValidator")
 public class BeforeCreateSafeboxValidator implements Validator{
@@ -46,7 +46,7 @@ public class BeforeCreateSafeboxValidator implements Validator{
 
 			errors.rejectValue("id", "INSECPASS", messageTemplate);	
 		}
-		
+				
 	}
 	
 }

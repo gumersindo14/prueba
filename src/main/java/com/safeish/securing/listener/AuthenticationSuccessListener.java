@@ -1,12 +1,12 @@
-package com.safeish.securing;
+package com.safeish.securing.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
-import com.safeish.safebox.jpa.entity.Safebox;
-import com.safeish.safebox.jpa.repository.SafeboxRepository;
+import com.safeish.safebox.entity.Safebox;
+import com.safeish.safebox.repository.SafeboxRepository;
 
 @Component
 public class AuthenticationSuccessListener implements ApplicationListener<AuthenticationSuccessEvent> {

@@ -6,7 +6,6 @@ public final class SecurityConstants {
 
 	// Signing key for HS512 algorithm
 	public static final String JWT_SECRET = "2rVT6wFtObLegSxNYCCLpy/gRmkcGQUkXp2s5v2dvD8uChJAOmL1pG+KbPeSztZd";
-	public static final String ENCRYPTOR_PASSWORD = "qBLBpzggxpOQPnoc";
 
 
 	// JWT token defaults

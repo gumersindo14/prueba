@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
 
-import com.safeish.model.UserAuthenticated;
+import com.safeish.securing.model.UserAuthenticated;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -75,28 +75,54 @@ public class JwtTokenUtil implements Serializable {
 
 		String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
 
-		if (token != null && token.contains(SecurityConstants.TOKEN_PREFIX)) {
+		String name = getNameFromRealToken(token);
 
-			try {			
-				
-				String realToken = token.replace(SecurityConstants.TOKEN_PREFIX, "");
+		if ("".equals(name)) {
+			user.setName(name);
+			user.setAuthenticated(true);
+		}
+		return user;
+	}
+
+	public String getUserNameFromRequestHeader(String token) {
+
+		String realToken = getRealToken(token);
+		return getNameFromRealToken(realToken);
+
+	}
+
+
+	private String getNameFromRealToken(String token) {
+
+		if (token != null && token.contains(SecurityConstants.TOKEN_PREFIX)) {
+			String realToken = getRealToken(token);
+
+			try {
 				String username = getUsernameFromToken(realToken);
 
 				if (username != null && !isTokenExpired(realToken)) {
-					user.setName(username);
-					user.setAuthenticated(true);
+					return username;
 				}
 
 			} catch (ExpiredJwtException e) {
 				System.out.println(" Token expired ");
-			} catch (SignatureException e) {				
-				System.out.println("calculating a signature or verifying an existing signature of a JWT failed");				
+			} catch (SignatureException e) {
+				System.out.println("calculating a signature or verifying an existing signature of a JWT failed");
 			} catch (Exception e) {
 				System.out.println(" Some other exception in JWT parsing ");
 			}
-
 		}
+		return "";
 
-		return user;
 	}
+	
+	private String getRealToken(String token) {
+		if (token.contains(SecurityConstants.TOKEN_PREFIX)) {
+			String realToken = token.replace(SecurityConstants.TOKEN_PREFIX, "");
+			return realToken;
+		}
+		return "";
+	}
+
+
 }

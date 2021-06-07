@@ -14,9 +14,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safeish.model.JwtRequest;
 import com.safeish.securing.JwtTokenUtil;
 import com.safeish.securing.SecurityConstants;
+import com.safeish.securing.model.JwtRequest;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 	
@@ -29,9 +29,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-		
+				
 		JwtRequest jwtRequest = new ObjectMapper().readValue(request.getInputStream(), JwtRequest.class);
-		UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),jwtRequest.getPassword());
+		UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(jwtRequest.getSafeboxId(),jwtRequest.getPassword());
 		
 		return getAuthenticationManager().authenticate(user);
 	}

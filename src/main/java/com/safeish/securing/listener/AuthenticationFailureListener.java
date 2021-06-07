@@ -1,4 +1,4 @@
-package com.safeish.securing;
+package com.safeish.securing.listener;
 
 import java.util.UUID;
 
@@ -7,8 +7,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.stereotype.Component;
 
-import com.safeish.safebox.jpa.entity.Safebox;
-import com.safeish.safebox.jpa.repository.SafeboxRepository;
+import com.safeish.safebox.entity.Safebox;
+import com.safeish.safebox.repository.SafeboxRepository;
 
 @Component
 public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {

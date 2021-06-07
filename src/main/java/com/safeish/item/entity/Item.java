@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.safeish.safebox.jpa.entity.Safebox;
+import com.safeish.safebox.entity.Safebox;
 
 @Entity
 public class Item {

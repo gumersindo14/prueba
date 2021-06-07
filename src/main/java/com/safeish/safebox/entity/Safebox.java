@@ -1,11 +1,13 @@
-package com.safeish.safebox.jpa.entity;
+package com.safeish.safebox.entity;
 
 import java.util.List;
+
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.safeish.item.entity.Item;
 
+@EntityListeners(SafeboxListener.class)
 @Entity
 @Table(name = "safebox")
 public class Safebox {
