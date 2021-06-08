@@ -75,9 +75,9 @@ public class JwtTokenUtil implements Serializable {
 
 		String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
 
-		String name = getNameFromRealToken(token);
+		String name = getNameFromToken(token);
 
-		if ("".equals(name)) {
+		if (!"".equals(name)) {
 			user.setName(name);
 			user.setAuthenticated(true);
 		}
@@ -85,14 +85,12 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	public String getUserNameFromRequestHeader(String token) {
-
-		String realToken = getRealToken(token);
-		return getNameFromRealToken(realToken);
+		return getNameFromToken(token);
 
 	}
 
 
-	private String getNameFromRealToken(String token) {
+	private String getNameFromToken(String token) {
 
 		if (token != null && token.contains(SecurityConstants.TOKEN_PREFIX)) {
 			String realToken = getRealToken(token);

@@ -16,13 +16,6 @@ import org.passay.PasswordValidator;
 import org.passay.RuleResult;
 import org.passay.WhitespaceRule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.safeish.safebox.entity.Safebox;
@@ -30,7 +23,6 @@ import com.safeish.safebox.repository.SafeboxRepository;
 import com.safeish.safebox.service.ISafeboxService;
 import com.safeish.safebox.service.impl.exceptions.RepeatedNameSafebox;
 import com.safeish.safebox.service.impl.exceptions.ValidatePasswordExceptions;
-import com.safeish.securing.JwtTokenUtil;
 
 @Service
 public class SafeboxRegisterService implements ISafeboxService {
@@ -83,27 +75,6 @@ public class SafeboxRegisterService implements ISafeboxService {
 
 	private Safebox saveSafeBox(Safebox safebox) {
 		return safeboxRepository.save(safebox);
-	}
-
-	@Override
-	public String openSafebox(String safeboxId, String password)throws SafeboxNotFoundException, SafeboxblockedExeption, UnauthorizedException {
-
-		if (safeboxId == null || "".equals(safeboxId))
-			throw new MalformedParametersException("User" + safeboxId + " was not found");
-
-		Safebox safebox = safeboxRepository.findById(UUID.fromString(safeboxId)).get();
-		if (safebox == null)
-			throw new SafeboxNotFoundException();
-
-		if (safebox.getAttempts() > 2)
-			throw new SafeboxblockedExeption("Safebox: " + safebox.getId() + " blocked");
-
-		PasswordEncoder codificador = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		if (!codificador.matches(password, safebox.getPassword()))
-			throw new UnauthorizedException();
-
-		return JwtTokenUtil.getInstance().generateToken(safebox.getId().toString());
-
 	}
 
 }

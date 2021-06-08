@@ -3,6 +3,7 @@ package com.safeish.item.entity;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 
 import com.safeish.safebox.entity.Safebox;
 
+@EntityListeners(ItemListener.class)
 @Entity
 public class Item {
 	

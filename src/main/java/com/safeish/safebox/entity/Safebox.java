@@ -37,16 +37,12 @@ public class Safebox {
     
     @OneToMany(mappedBy = "safebox", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items;
-
-
-    
+  
     public Safebox() {}
     
-    public Safebox(String name, String password) {
-    
+    public Safebox(String name, String password) {    
     	this.name = name;
-    	this.password = password;
-    
+    	this.password = password;    
     }
     
     public String getName() {

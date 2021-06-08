@@ -12,8 +12,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.safeish.securing.filter.JwtAuthorizationFilter;
 import com.safeish.securing.filter.JwtAuthenticationFilter;
-import com.safeish.securing.filter.LoginFilter;
 
 @Configuration
 public class MvcConfig extends WebSecurityConfigurerAdapter {
@@ -28,14 +28,7 @@ public class MvcConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService).passwordEncoder(codificador);
 			
 	}
-		
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		
-		web.ignoring().antMatchers("safebox/");
-	
-	}
-	
+			
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {		
 		
@@ -46,8 +39,8 @@ public class MvcConfig extends WebSecurityConfigurerAdapter {
 		.permitAll()
 		.anyRequest().authenticated()
 		.and()
-		.addFilterBefore(new LoginFilter("/safebox/open",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-		.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);		
+		.addFilterBefore(new JwtAuthenticationFilter("/safebox/open",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);		
 	}
 	
 }

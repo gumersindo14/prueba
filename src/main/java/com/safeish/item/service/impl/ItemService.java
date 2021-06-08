@@ -1,7 +1,10 @@
 package com.safeish.item.service.impl;
 
+import java.lang.reflect.MalformedParametersException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +14,11 @@ import com.safeish.item.service.IItemService;
 import com.safeish.safebox.entity.Safebox;
 import com.safeish.safebox.repository.SafeboxRepository;
 import com.safeish.securing.JwtTokenUtil;
-import com.safeish.securing.listener.AuthenticationSuccessListener;
+
+import javassist.NotFoundException;
 
 @Service
-public class ItemService implements IItemService{
+public class ItemService implements IItemService {
 	
 	@Autowired
 	ItemRepository itemRepository;
@@ -23,44 +27,58 @@ public class ItemService implements IItemService{
 	SafeboxRepository safeboxRepository;
 	
 	@Override
-	public ResponseEntity<String> putItem(String token, String itemName) {
-		
-		Item item = new Item();		
+	public void putItem(String token, List<String> itemNames, String id) throws MalformedParametersException, NotFoundException, IdsNotMatchException {
 		
 		String name = JwtTokenUtil.getInstance().getUserNameFromRequestHeader(token);
-		Safebox safebox = safeboxRepository.findByName(name);
-		
-		if(itemName == null)
-			return new ResponseEntity<>("Malformed expected data",HttpStatus.UNPROCESSABLE_ENTITY );		
-		if(safebox == null )
-			return new ResponseEntity<>("Requested safebox does not exist",HttpStatus.NOT_FOUND );
-		
-		if(AuthenticationSuccessListener.MAX_ATTEMPTS <= safebox.getAttempts())
-			return new ResponseEntity<>("Requested safebox is locked", HttpStatus.LOCKED);		
+		if (name == null || name.equals(""))
+			throw new MalformedParametersException("Malformed expected data");
 
-		item.setName(itemName);
-		item.setSafebox(safebox);		
-		itemRepository.save(item);
+		Safebox safebox = safeboxRepository.findByName(name);
+		checkParams(itemNames, safebox, id);
 		
-		return ResponseEntity.ok(item.getName());
+		addItemsToSafebox(itemNames, safebox);
+		
+	}
+	
+	private void addItemsToSafebox(List<String> itemNames, Safebox safebox) {
+		itemNames.forEach(itemName -> {
+			
+			Item item = new Item();
+			item.setName(itemName);
+			item.setSafebox(safebox);
+			itemRepository.save(item);
+			
+		});
+	}
+	
+	private void checkParams(List<String> itemName, Safebox safebox, String id) throws NotFoundException, MalformedParametersException, IdsNotMatchException {
+		if (itemName == null || itemName.isEmpty())
+			throw new MalformedParametersException("Malformed expected data");
+		if (safebox == null)
+			throw new NotFoundException("Requested safebox does not exist");
+		if (safebox.getId() == null || safebox.getId().equals(id))
+			throw new IdsNotMatchException("Requested safebox does not exist");
+		
 	}
 	
 	@Override
-	public ResponseEntity<Object> getItems(String token) {
+	public ResponseEntity<Object> getItems(String token) throws NotFoundException,MalformedParametersException {
 		
-		String name = JwtTokenUtil.getInstance().getUserNameFromRequestHeader(token);
-		if(name == null)
-			return new ResponseEntity<>("Malformed expected data", HttpStatus.NOT_FOUND);		
-
+		String name = JwtTokenUtil.getInstance().getUserNameFromRequestHeader(token);		
+		if (name == null)
+			throw new MalformedParametersException("Malformed expected data");
+		
 		Safebox safebox = safeboxRepository.findByName(name);
-		if(safebox == null )
-			return new ResponseEntity<>("Requested safebox does not exist", HttpStatus.NOT_FOUND);		
-		if(AuthenticationSuccessListener.MAX_ATTEMPTS <= safebox.getAttempts())
-			return new ResponseEntity<>("Requested safebox is locked", HttpStatus.LOCKED);
-				
-		return ResponseEntity.ok(itemRepository.findAll());
+		if (safebox == null)
+			throw new NotFoundException("Requested safebox does not exist");
+		
+		
+		List<Item> items = itemRepository.findBySafebox(safebox.getId());
+		String ret = "";
+		if (items != null)
+			ret = items.stream().map(Item::getName).collect(Collectors.joining("\n-", "-", ""));
+		
+		return ResponseEntity.ok(ret);
 	}
-
-
 	
 }
