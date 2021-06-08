@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safeish.item.service.IItemService;
-import com.safeish.item.service.impl.IdsNotMatchException;
+import com.safeish.item.service.impl.exceptions.IdsNotMatchException;
 
 import javassist.NotFoundException;
 

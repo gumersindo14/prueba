@@ -1,4 +1,4 @@
-package com.safeish.item.service.impl;
+package com.safeish.item.service.impl.exceptions;
 
 public class IdsNotMatchException extends Exception {
 	

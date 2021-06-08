@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
@@ -26,6 +25,7 @@ public class ItemListener {
 	public void encodingItem(Item item) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {   	
     	item.setName(encrypt(item.getName()));    	
     }
+    
     @PostLoad
 	public void decodingItem(Item item) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {   	
     	item.setName(decrypt(item.getName()));

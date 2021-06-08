@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.safeish.item.service.impl.IdsNotMatchException;
+import com.safeish.item.service.impl.exceptions.IdsNotMatchException;
 
 import javassist.NotFoundException;
 
